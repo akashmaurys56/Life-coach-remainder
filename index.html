@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>लाइफ कोच रिमाइंडर · Life Coach Reminder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- header with lang/theme -->
+        <div class="header">
+            <div class="greeting"><span>🧘</span> <span id="greetingMsg">नमस्ते</span></div>
+            <div class="top-actions">
+                <button class="lang-toggle" id="langToggle">🌐 हिंदी</button>
+                <button class="theme-toggle" id="themeToggle">🌙 डार्क</button>
+            </div>
+        </div>
+
+        <!-- profile summary -->
+        <div class="profile-row" id="profileRow">
+            <div class="profile-info">
+                <span>👤</span>
+                <strong id="profileName">अतिथि</strong>
+                <span class="badge" id="profileRole">उपयोगकर्ता</span>
+            </div>
+            <button class="edit-profile-btn" id="editProfileBtn">✎ प्रोफाइल</button>
+        </div>
+
+        <!-- navigation -->
+        <div class="nav-tabs">
+            <button class="nav-btn active" data-section="dashboard">🏠 डैशबोर्ड</button>
+            <button class="nav-btn" data-section="form">➕ नया रिमाइंडर</button>
+            <button class="nav-btn" data-section="list">📋 सभी रिमाइंडर</button>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboardSection" class="section active-section">
+            <div class="card">
+                <h3>आज के रिमाइंडर <span id="todayCount"></span></h3>
+                <div id="todayRemindersList" style="margin-top: 15px;">लोड हो रहा...</div>
+            </div>
+            <div class="card">
+                <h3>📊 कैटेगरी काउंट</h3>
+                <div id="categoryCounts" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 12px;">
+                    <span>💧 हेल्थ: 0</span> <span>📚 पढ़ाई: 0</span> <span>🏠 घर: 0</span> <span>👪 फैमिली: 0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM SECTION (create reminder) -->
+        <div id="formSection" class="section">
+            <div class="card">
+                <h3>नया रिमाइंडर</h3>
+                <div class="form-group">
+                    <label>रिमाइंडर नाम <span>💧📚 etc</span></label>
+                    <input type="text" id="reminderName" placeholder="जैसे: पानी पीना">
+                </div>
+                <div class="form-group">
+                    <label>तारीख & समय</label>
+                    <input type="datetime-local" id="reminderDatetime">
+                </div>
+                <div class="form-group">
+                    <label>दोहराना</label>
+                    <select id="reminderRepeat">
+                        <option value="none">एक बार</option>
+                        <option value="daily">रोज़</option>
+                        <option value="hourly">हर घंटे</option>
+                        <option value="weekly">हफ्ते में</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>किसके लिए</label>
+                    <select id="reminderForWhom">
+                        <option value="खुद">खुद (मैं)</option>
+                    </select>
+                    <small>परिवार जोड़ें प्रोफाइल में</small>
+                </div>
+                <div class="form-group">
+                    <label>कैटेगरी</label>
+                    <select id="reminderCategory">
+                        <option value="health">💧 हेल्थ</option>
+                        <option value="study">📚 पढ़ाई</option>
+                        <option value="home">🏠 घर</option>
+                        <option value="family">👪 फैमिली</option>
+                        <option value="other">🔔 अन्य</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>आवाज / मैसेज</label>
+                    <textarea id="reminderMessage" rows="2">याद दिलाना है!</textarea>
+                </div>
+                <div class="flex-row">
+                    <button class="btn-primary" id="saveReminderBtn">✅ रिमाइंडर सेव करें</button>
+                    <button class="voice-btn" id="voiceInputBtn" title="बोलकर बनाएं">🎤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIST SECTION (all reminders) -->
+        <div id="listSection" class="section">
+            <div class="filter-bar">
+                <input type="text" class="search-box" id="searchInput" placeholder="🔍 खोजें...">
+                <select id="categoryFilter" class="filter-btn" style="flex:0 0 auto;">
+                    <option value="all">सभी</option>
+                    <option value="health">💧 हेल्थ</option>
+                    <option value="study">📚 पढ़ाई</option>
+                    <option value="home">🏠 घर</option>
+                    <option value="family">👪 फैमिली</option>
+                    <option value="other">🔔 अन्य</option>
+                </select>
+                <select id="statusFilter" class="filter-btn">
+                    <option value="all">सभी स्थिति</option>
+                    <option value="pending">बाकी</option>
+                    <option value="completed">हो गए</option>
+                </select>
+            </div>
+            <div id="allRemindersList" class="card">लोड हो रहा...</div>
+        </div>
+
+        <div class="footer-note">⏰ लाइफ कोच रिमाइंडर • परिवार संग</div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL (simple) -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card">
+            <h3>प्रोफाइल एडिट</h3>
+            <div class="form-group">
+                <label>नाम</label>
+                <input type="text" id="modalName" placeholder="आपका नाम">
+            </div>
+            <div class="form-group">
+                <label>भूमिका</label>
+                <select id="modalRole">
+                    <option value="student">🎓 स्टूडेंट</option>
+                    <option value="parent">👪 पेरेंट्स</option>
+                    <option value="other">🧑 अन्य</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>परिवार के सदस्य (अल्पविराम से)</label>
+                <input type="text" id="modalFamily" placeholder="मम्मी, पापा, भाई">
+            </div>
+            <div class="flex-row">
+                <button class="btn-primary" id="saveProfileBtn">सेव करें</button>
+                <button id="closeModalBtn" style="background:none; border:none; padding:16px;">बंद करें</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
