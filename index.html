@@ -148,6 +148,19 @@
         </div>
     </div>
 
+<!-- Reminder Popup Modal (hidden by default) -->
+<div class="modal-overlay" id="reminderPopup">
+    <div class="modal-card">
+        <h3>⏰ रिमाइंडर</h3>
+        <p id="popupReminderName" style="font-size:1.4rem; font-weight:bold; margin:10px 0;"></p>
+        <p id="popupReminderMessage" style="margin-bottom:20px;"></p>
+        <div class="flex-row" style="justify-content:space-around;">
+            <button class="btn-primary" id="popupDone" style="width:45%;">✅ हो गया</button>
+            <button class="btn-primary" id="popupCancel" style="width:45%; background:#6c757d;">⏰ मन नहीं</button>
+        </div>
+    </div>
+</div>
+
     <script src="script.js"></script>
 </body>
 </html>
